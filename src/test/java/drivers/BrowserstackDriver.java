@@ -3,7 +3,6 @@ package drivers;
 import com.codeborne.selenide.WebDriverProvider;
 import config.BrowserstackConfig;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.ios.IOSDriver;
 import org.aeonbits.owner.ConfigFactory;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -13,8 +12,7 @@ import javax.annotation.Nonnull;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static helpers.EnvHelper.isAndroid;
-import static helpers.EnvHelper.isIos;
+import static helpers.EnvHelper.isBrowserStack;
 
 public class BrowserstackDriver implements WebDriverProvider {
 
@@ -23,10 +21,8 @@ public class BrowserstackDriver implements WebDriverProvider {
     @Nonnull
     @Override
     public WebDriver createDriver(@Nonnull Capabilities capabilities) {
-        if (isAndroid) {
+        if (isBrowserStack) {
             return getAndroidDriver();
-        } else if (isIos) {
-            return getIosDriver();
         } else {
             return null;
         }
@@ -53,17 +49,5 @@ public class BrowserstackDriver implements WebDriverProvider {
             throw new RuntimeException(e);
         }
     }
-
-    public IOSDriver getIosDriver() {
-        DesiredCapabilities caps = commonCapabilities();
-
-        try {
-            return new IOSDriver(
-                    new URL(config.getBaseUrl()), caps);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
 }
