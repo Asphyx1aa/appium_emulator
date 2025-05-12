@@ -69,3 +69,16 @@ test {
         events "passed", "skipped", "failed"
     }
 }
+task local_tests(type: Test) {
+    systemProperties(System.getProperties())
+    useJUnitPlatform {
+        includeTags("local", "emulator")
+    }
+}
+
+task remote_tests(type: Test) {
+    systemProperties(System.getProperties())
+    useJUnitPlatform {
+        includeTags("browserstack")
+    }
+}

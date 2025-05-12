@@ -1,23 +1,22 @@
-package tests.browserstack.android;
+package tests;
 
 import io.qameta.allure.Severity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
+import pages.WikipediaOnbordingPage;
 import pages.WikipediaSearchPage;
-import tests.browserstack.TestBase;
 
 import static io.qameta.allure.SeverityLevel.CRITICAL;
+import static io.qameta.allure.SeverityLevel.NORMAL;
 
-public class WikipediaSearchTests extends TestBase {
+public class WikipediaTests extends TestBase  {
     final WikipediaSearchPage wikipediaSearchPage = new WikipediaSearchPage();
+    final WikipediaOnbordingPage wikipediaOnbordingPage = new WikipediaOnbordingPage();
 
     @Test
-    @Tags({
-            @Tag("mobile"),
-            @Tag("android")
-    })
+    @Tag("browserstack")
     @Severity(CRITICAL)
     @DisplayName("Проверка работы поиска на главном экране приложения")
     void searchOnMainScreenTest() {
@@ -29,10 +28,7 @@ public class WikipediaSearchTests extends TestBase {
     }
 
     @Test
-    @Tags({
-            @Tag("mobile"),
-            @Tag("android")
-    })
+    @Tag("browserstack")
     @Severity(CRITICAL)
     @DisplayName("Проверка корректного открывания статьи из списка результатов")
     void openArticleFromTheResultList() {
@@ -42,6 +38,21 @@ public class WikipediaSearchTests extends TestBase {
                 .sendSearchQuery(searchQuery)
                 .openArticle()
                 .verifyNameOfArticle();
+    }
+
+    @Test
+    @Tag("local")
+    @Tag("emulator")
+    @Severity(NORMAL)
+    @DisplayName("Проверяем наличие контента в онбординге при первом запуске")
+    void verifyThatAllContentExists() {
+        wikipediaOnbordingPage.assertThatMainTitleExist()
+                .goOnNextScreen()
+                .assertThatImageExists()
+                .goOnNextScreen()
+                .assertThatSubtitleExists()
+                .goOnNextScreen()
+                .assertThatButtonFinishOnbordingExists();
     }
 }
 
